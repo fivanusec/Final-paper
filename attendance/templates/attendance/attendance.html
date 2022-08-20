@@ -1,0 +1,154 @@
+{% extends 'main/base.html' %} {% block content %}
+    <div style="display: flex; flex-direction: row; width:100%;">
+        <div style="display:block; height: 100%; width: 100%;">
+            <h3>Attendance statistics</h3>
+            <canvas id="attendance-stat" style="display: block; box-sizing: border-box; height: 100px; width: 300px;"
+                    width="300px"
+                    height="100px"></canvas>
+        </div>
+        <br/>
+        <div style="display: block; height: 100%; width: 100%; margin-left: 25px;">
+            <h3>Yearly attendance</h3>
+            <canvas id="myChart" style="display: block; box-sizing: border-box; height: 100px; width: 300px;"
+                    width="300px"
+                    height="100px"></canvas>
+        </div>
+    </div>
+    <br/>
+    <div style="margin-top: 25px;">
+        <button type="button" id="create" class="btn btn-primary"
+                style="background: rgb(148,193,219); border-color: rgb(148,193,219);">
+            Create new attendance
+        </button>
+    </div>
+    <div style="margin-top: 25px;">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Confirmed</th>
+                <th scope="col">Confirmed recognition</th>
+                <th scope="col">Attendance date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for attendance in data %}
+                <tr>
+                    <th scope="row">{{ attendance.id }}</th>
+                    <td>{{ attendance.student.first_name }}</td>
+                    <td>{{ attendance.student.last_name }}</td>
+                    <td>{{ attendance.subject }}</td>
+                    <td>{{ attendance.confirmed }}</td>
+                    <td>{{ attendance.recognition }}</td>
+                    <td>{{ attendance.attendance_date }}</td>
+                    <td><button id="edit{{ attendance.id }}"
+                                style="background: rgb(148,193,219); border-color: rgb(148,193,219);"
+                                class="btn btn-primary">Edit
+                        </button></td>
+                </tr>
+                <script>
+                    document.getElementById("edit{{ attendance.id }}").onclick = () => {
+                        location.href = "/attendance/update-attendance/{{ attendance.id }}";
+                    };
+                </script>
+            {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if data.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ data.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for i in data.paginator.page_range %}
+                    {% if data.number == i %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if data.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ data.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <script type="text/javascript">
+        const MONTHS = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
+
+        const months = (config) => {
+            const cfg = config || {};
+            const count = cfg.count || 12;
+            const section = cfg.section;
+            const values = [];
+            let i, value;
+
+            for (i = 0; i < count; ++i) {
+                value = MONTHS[Math.ceil(i) % 12];
+                values.push(value.substring(0, section));
+            }
+
+            return values;
+        }
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const ctx_stat = document.getElementById('attendance-stat').getContext('2d');
+        const date = new Date(new Date().setMonth(new Date().getMonth() + 1)).toDateString()
+        const label = [new Date().toDateString().split(' ')[1], date.split(' ')[1]]
+        const labelAll = months({count: 12})
+        const dataAll = {
+            labels: labelAll,
+            datasets: [{
+                label: 'Attendance this year',
+                data:{{ stats.all }},
+                fill: false,
+                backgroundColor: 'rgb(148,193,219)',
+                borderColor: 'rgb(148,193,219)',
+                tension: 0.1
+            }]
+        };
+        const data = {
+            labels: label,
+            datasets: [{
+                label: 'Attendance this month',
+                data:{{ stats.month }},
+                fill: true,
+                backgroundColor: 'rgb(148,193,219)',
+                borderColor: 'rgb(148,193,219)',
+                tension: 0.1
+            }]
+        };
+        const chart = new Chart(ctx_stat, {
+            type: 'bar',
+            data: data
+        })
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: dataAll,
+        });
+
+        document.getElementById("create").onclick = () => {
+            location.href = "/attendance/create-attendance";
+        };
+    </script>
+{% endblock %}

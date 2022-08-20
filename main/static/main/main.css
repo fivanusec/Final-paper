@@ -1,0 +1,139 @@
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #444444;
+}
+
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  background-color: #94c1db;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: white;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.navbar-text {
+  color: white;
+}
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 28px; /* Increased text to enable scrolling */
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: white;
+  overflow-x: hidden;
+  padding-top: 55px;
+  margin-top: 54px;
+  transition: all 0.2s ease-in-out;
+}
+
+.sidenav-element {
+  padding: 5px 60px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  background: #94c1db;
+  margin: 25px 0 15px 0;
+  width: 249px;
+  border-radius: 0 12px 12px 0;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.closer {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  text-decoration: none !important;
+  border: none;
+  color: #94c1db;
+}
+
+.menu-btn {
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+  margin-right: 25px;
+}
+
+#video {
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px black;
+  width: 320px;
+  height: 240px;
+}
+
+#photo {
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px black;
+  width: 320px;
+  height: 240px;
+}
+
+#canvas {
+  display: none;
+}
+
+.camera {
+  width: 340px;
+  display: inline-block;
+}
+
+.output {
+  width: 340px;
+  display: inline-block;
+}
+
+#startbutton {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 32px;
+  margin-top: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}

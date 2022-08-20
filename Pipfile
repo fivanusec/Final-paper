@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+psycopg2 = "*"
+numpy = "*"
+deepface = "*"
+pandas = "*"
+django-crispy-forms = "*"
+crispy-bootstrap5 = "*"
+cmake = "*"
+dlib = "*"
+opencv-python = "*"
+imagehash = "*"
+django-redis = "*"
+tensorflow-macos = "*"
+
+[dev-packages]
+yapf = "*"
+
+[requires]
+python_version = "3.10"

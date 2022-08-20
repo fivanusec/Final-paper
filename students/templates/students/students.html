@@ -1,0 +1,81 @@
+{% extends 'main/base.html' %} {% block content %}
+    <div>Students</div>
+    <br/>
+    <div>
+        <button type="button" id="create" class="btn btn-primary"
+                style="background: rgb(148,193,219); border-color: rgb(148,193,219);">
+            Create new student
+        </button>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Year</th>
+                <th scope="col">Field of study</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in data %}
+                <tr>
+                    <th scope="row">{{ student.id }}</th>
+                    <td>{{ student.first_name }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.year }}</td>
+                    <td>{{ student.field_of_study }}</td>
+                    <td>
+                        <button id="edit{{ student.id }}"
+                                style="background: rgb(148,193,219); border-color: rgb(148,193,219);"
+                                class="btn btn-primary">Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button id="delete{{ student.id }}" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                <script>
+                    document.getElementById("delete{{ student.id }}").onclick = () => {
+                        location.href = "/students/delete-student/{{ student.id }}";
+                    };
+                    document.getElementById("edit{{ student.id }}").onclick = () => {
+                        location.href = "/students/update-student/{{ student.id }}";
+                    };
+                </script>
+            {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if data.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ data.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for i in data.paginator.page_range %}
+                    {% if data.number == i %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if data.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ data.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("create").onclick = () => {
+            location.href = "/students/create-student";
+        };
+    </script>
+{% endblock %}
